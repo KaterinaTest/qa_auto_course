@@ -63,3 +63,70 @@ def test_detailed_orders():
     assert orders[0][1] == "Sergii"
     assert orders[0][2] == "солодка вода"
     assert orders[0][3] == "з цукром"
+
+
+@pytest.mark.mydatabasetest
+def test_check_ability_add_incorrect_data():
+    db = Database()
+    db.insert_digitaltext_instead_in_id("100", 23, 12, "12")
+    product = db.get_products_table_values_by_id(100)
+
+    if len(product) == 1:
+        print("Entered text value for id and qnt became digital")
+
+
+@pytest.mark.mydatabasetest
+def test_check_ability_add_incorrect_data_text_qnt():
+    db = Database()
+    db.insert_text_instead_int_qnt(100, "text_name", "description", "text_qnt")
+    product = db.get_products_table_values_by_id(100)
+
+    if len(product) == 1:
+        print("Entered text value for quantity became text")
+
+
+@pytest.mark.mydatabasetest
+def test_check_ability_add_incorrect_data_text_id():
+    db = Database()
+    db.insert_text_instead_int_id("text_id", "text_name", "descr", 60)
+    product = db.get_products_table_values_by_id("text_id")
+
+    print(product)
+
+
+@pytest.mark.mydatabasetest
+def test_check_ability_add_incorrect_data():
+    db = Database()
+    db.insert_in_instead_text_name(100, 23, 12, 150)
+    product = db.get_products_table_values_by_id(100)
+
+    if len(product) == 1:
+        print("Entered digital value for name and description became text")
+
+
+@pytest.mark.mydatabasetest
+def test_check_ability_insert_existing_id():
+    db = Database()
+    db.insert_existing_id(100, 'text1"', "text2", 150)
+    product = db.get_products_table_values_by_id(100)
+
+    print(product)
+
+
+@pytest.mark.mydatabasetest
+def test_get_product_by_text_type_id():
+    db = Database()
+    product = db.get_product_by_id_text_type("1")
+
+    if len(product) == 1:
+        print("The product was returned")
+
+    print(product)
+
+
+@pytest.mark.mydatabasetest
+def test_get_product_by_non_text_type_name():
+    db = Database()
+    product = db.get_product_by_name_non_text_type("солодка вода")
+
+    print(product)
